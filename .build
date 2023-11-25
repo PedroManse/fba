@@ -1,1 +1,1 @@
-cc -O3 -Wall -Wextra -Werror -lm -o $out $file
+cc $file -o $out -O3 -Wall -Wextra -Werror -lm
