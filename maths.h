@@ -10,9 +10,10 @@ long double lerp(
 	return a * (1-p) + (b*p);
 }
 
-color* frame_pos ( struct frame jar, int y, int x ) {
-	return jar.fbmem + (y+jar.yoff)*jar.skip + (jar.xoff+x);
-}
+#define frame_pos(frame, y, x) (frame.fbmem + (y+frame.yoff)*frame.skip + (frame.xoff+x))
+//color* frame_pos ( struct frame jar, int y, int x ) {
+//	return jar.fbmem + (y+jar.yoff)*jar.skip + (jar.xoff+x);
+//}
 
 bool in_frame(struct frame jar, int y, int x) {
 	return ( (unsigned)y < jar.rows && (unsigned)x < jar.cols );

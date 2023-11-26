@@ -1,6 +1,7 @@
 #include "fba.h"
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
 
 #ifndef __useconds_t
 #define __useconds_t unsigned int
@@ -14,16 +15,47 @@ int fsleep (long double t) {
 	return usleep((int) lroundl(1000000.0 * t));
 }
 
+void sprite_deloc(struct sprite *sprite) {
+	free(sprite->content);
+	free(sprite);
+}
+
+struct sprite *sprite_read(char *filename) {
+	struct sprite *sprite = malloc(sizeof(*sprite));
+	int fd = open(filename, O_RDONLY);
+	assert(read(fd,
+		(uint32_t*)sprite,
+		sizeof(uint32_t)*2)
+	);
+	color *content_buffer = calloc(
+		sprite->width * sprite->heigth,
+		sizeof(color)
+	);
+	assert(read(fd, content_buffer,
+		sizeof(color) * sprite->width * sprite->heigth
+	));
+	sprite->content = content_buffer;
+	close(fd);
+	return sprite;
+}
+
 int main() {
 	struct frame frame = InitFb();
 
-	for (int r = 1; r<100; r++) {
-		fill_circle(frame,
-			100, 100, r,
-			0xa0a0a0
-		);
-		fsleep(.3);
-	}
+	struct sprite *sprite = sprite_read("a.font");
+
+	sprite_draw(frame, 100, 100, sprite);
+
+	sprite_deloc(sprite);
+
+// growing ball
+//	for (int r = 1; r<100; r++) {
+//		fill_circle(frame,
+//			100, 100, r,
+//			0xa0a0a0
+//		);
+//		fsleep(.3);
+//	}
 
 //	draw_free_line(
 //		frame, 100, 100,

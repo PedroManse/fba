@@ -232,5 +232,19 @@ void fill_circle(
 				location[(y+_y)*frame.skip+x+_x] = write;
 }
 
+void sprite_draw(
+	const struct frame frame,
+	const int y, const int x,
+	const struct sprite *sprite
+) {
+#ifndef RELEASE
+	assert(in_frame(frame, y, x));
+	assert(in_frame(frame, y+sprite->heigth, x+sprite->width));
+#endif
 
+	color *location = frame_pos(frame, y, x);
+	for (uint32_t _y = 0; _y < sprite->heigth; _y++)
+		for (uint32_t _x = 0; _x < sprite->width; _x++)
+			location[_y*frame.skip+_x] = sprite->content[_y*(sprite->width)+_x];
+}
 

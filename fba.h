@@ -32,6 +32,11 @@ typedef struct {
 typedef uint32_t color;
 #define COL(R, G, B) (color)( (R<<16) + (G<<8) + B )
 
+struct sprite {
+	uint32_t width;
+	uint32_t heigth;
+	color *content;
+};
 
 struct frame {
 	color* fbmem;
