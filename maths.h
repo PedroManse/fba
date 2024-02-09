@@ -3,9 +3,9 @@
 
 // p = 0..1
 long double lerp(
-		long double a,
-		long double b,
-		long double p
+	long double a,
+	long double b,
+	long double p
 ) {
 	return a * (1-p) + (b*p);
 }
